@@ -1,8 +1,9 @@
 package com.example.website.service;
 
 import com.example.website.dto.LoginRequest;
+import com.example.website.dto.LoginResponse;
 
 public interface AuthService {
 
-    String login(LoginRequest request);
+    LoginResponse login(LoginRequest request);
 }

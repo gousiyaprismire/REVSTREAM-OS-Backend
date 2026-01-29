@@ -1,11 +1,11 @@
 package com.example.website.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import com.example.website.dto.RegistrationRequest;
 import com.example.website.dto.RegistrationResponse;
 import com.example.website.service.RegistrationService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/registration")
@@ -16,9 +16,9 @@ public class RegistrationController {
     private RegistrationService service;
 
     @PostMapping
-    public RegistrationResponse register(@RequestBody RegistrationRequest request) {
+    public RegistrationResponse register(
+            @RequestBody RegistrationRequest request
+    ) {
         return service.register(request);
     }
-    
-    
 }

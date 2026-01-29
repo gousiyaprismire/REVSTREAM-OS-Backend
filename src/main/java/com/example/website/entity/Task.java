@@ -40,7 +40,6 @@ public class Task {
     private Registration registration;
     
     
-
     // Getters & Setters
 
     public Long getId() {

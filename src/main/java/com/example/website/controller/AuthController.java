@@ -38,6 +38,6 @@ public class AuthController {
         Long userId = user.getId();
         String token = jwtUtil.generateToken(userId, request.getCompanyEmail());
 
-        return new LoginResponse(token, "Login successful");
+        return new LoginResponse(token, "suuccessful");
     }
 }

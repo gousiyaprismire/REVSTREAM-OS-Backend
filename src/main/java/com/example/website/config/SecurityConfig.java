@@ -1,3 +1,5 @@
+
+
 package com.example.website.config;
 
 import com.example.website.filters.JwtAuthFilter;
@@ -24,22 +26,29 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/registration/**").permitAll()
-                        .anyRequest().authenticated()
-                );
+            .cors(Customizer.withDefaults())
+            .csrf(csrf -> csrf.disable()) // REQUIRED for Postman
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    "/api/auth/**",
+                    "/api/registration/**"
+                ).permitAll()
+                .anyRequest().authenticated()
+            );
 
+        // IMPORTANT: JWT filter AFTER auth config
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config
+    ) throws Exception {
         return config.getAuthenticationManager();
     }
 }

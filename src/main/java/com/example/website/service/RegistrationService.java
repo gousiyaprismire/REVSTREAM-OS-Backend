@@ -7,6 +7,4 @@ import com.example.website.dto.RegistrationResponse;
 
 public interface RegistrationService {
     RegistrationResponse register(RegistrationRequest request);
-
-   
 }

@@ -24,9 +24,10 @@ public class AddressServiceImpl implements AddressService {
     public String saveAddress(Long registrationId, AddressRequest request) {
 
         Registration reg = registrationRepository.findById(registrationId)
-                .orElseThrow(() -> new RuntimeException("Registration not found with ID: " + registrationId));
+                .orElseThrow(() ->
+                        new RuntimeException("Registration not found with ID: " + registrationId));
 
-        // ✅ avoid duplicate address for same registration
+       
         if (addressRepository.existsByRegistrationId(registrationId)) {
             return "Address already added for this registration";
         }
@@ -38,7 +39,6 @@ public class AddressServiceImpl implements AddressService {
         address.setDistrict(request.getDistrict());
         address.setPinCode(request.getPinCode());
         address.setCountry(request.getCountry());
-
         address.setRegistration(reg);
 
         addressRepository.save(address);
