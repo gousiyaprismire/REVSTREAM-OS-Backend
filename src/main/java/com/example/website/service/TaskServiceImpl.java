@@ -26,7 +26,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void addNewTask(Long registrationId, TaskRequest request) {
+    public Task addNewTask(Long registrationId, TaskRequest request) {
 
         Registration registration = registrationRepository.findById(registrationId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + registrationId));
@@ -48,7 +48,7 @@ public class TaskServiceImpl implements TaskService {
         // ✅ Link task to user
         task.setRegistration(registration);
 
-        taskRepository.save(task);
+        return taskRepository.save(task);
     }
 
     @Override

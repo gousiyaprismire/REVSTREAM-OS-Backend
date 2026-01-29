@@ -1,6 +1,7 @@
 package com.example.website.service;
 
 import com.example.website.entity.Registration;
+import com.example.website.entity.Task;
 import com.example.website.entity.Wallet;
 import com.example.website.entity.WalletTransaction;
 import com.example.website.repository.RegistrationRepository;
@@ -15,6 +16,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -50,6 +53,17 @@ public class WalletService {
                 razorpayKeySecret
         );
     }
+
+    public Map<String,Object> getWalletStatus(Long registrationId) {
+        Wallet wallet = getWallet(registrationId);
+        Map<String,Object> map = new HashMap<>();
+        map.put("balance",wallet.getBalance());
+        map.put("locked_balance",wallet.getLockedBalance());
+        map.put("pendingWithdrawn",wallet.getPendingWithdrawn());
+        return map;
+    }
+
+
 
 
     public Wallet createWallet(Registration registration) {
@@ -132,6 +146,26 @@ public class WalletService {
         } catch (Exception e) {
             throw new RuntimeException("Payment verification failed", e);
         }
+    }
+
+    public void lockMoneyForTask(
+            Task task,
+            long registrationId
+    ){
+        Wallet wallet=getWallet(registrationId);
+        WalletTransaction transaction=new WalletTransaction();
+        transaction.setWallet(wallet);
+        transaction.setStatus("success");
+        transaction.setAmount(task.getPrice());
+        transaction.setType("task_lock");
+        transactionRepository.save(transaction);
+        wallet.setBalance(wallet.getBalance() - task.getPrice());
+        wallet.setLockedBalance(wallet.getLockedBalance() + task.getPrice());
+        walletRepository.save(wallet);
+    }
+
+    public double getBalance(long registrationId){
+        return getWallet(registrationId).getBalance();
     }
 
     public void withdrawMoneyRequest(Wallet wallet, Double amount){
