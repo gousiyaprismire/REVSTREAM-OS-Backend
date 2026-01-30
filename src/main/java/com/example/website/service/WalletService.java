@@ -193,7 +193,13 @@ public class WalletService {
 
 
     public Wallet getWallet(Long registrationId) {
+
         return walletRepository.findByRegistrationId(registrationId)
-                .orElseThrow(() -> new RuntimeException("Wallet not found"));
+                .orElseGet(() -> {
+                    Registration registration = registrationRepository.findById(registrationId)
+                            .orElseThrow(() -> new RuntimeException("Registration not found"));
+
+                    return createWallet(registration);
+                });
     }
 }
