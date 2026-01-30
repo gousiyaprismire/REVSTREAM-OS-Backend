@@ -17,10 +17,10 @@ public class Address {
     private String pinCode;
     private String country;
 
-    //  link with Registration table
+    //  link with User table
     @OneToOne
     @JoinColumn(name = "registration_id", nullable = false)
-    private Registration registration;
+    private User user;
 
     // Getters & Setters
     public Long getId() { return id; }
@@ -44,6 +44,6 @@ public class Address {
     public String getCountry() { return country; }
     public void setCountry(String country) { this.country = country; }
 
-    public Registration getRegistration() { return registration; }
-    public void setRegistration(Registration registration) { this.registration = registration; }
+    public User getRegistration() { return user; }
+    public void setRegistration(User user) { this.user = user; }
 }

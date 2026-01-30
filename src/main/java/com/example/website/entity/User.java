@@ -3,8 +3,11 @@ package com.example.website.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "registrations")
-public class Registration {
+@Table(name = "registrations" , indexes = {
+        @Index(name = "idx_registrations_companyName",columnList = "companyName"),
+        @Index(name = "idx_registrations_companyEmail",columnList = "companyEmail")
+})
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

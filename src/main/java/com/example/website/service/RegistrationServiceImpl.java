@@ -1,20 +1,20 @@
 package com.example.website.service;
 
+import com.example.website.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.website.dto.RegistrationRequest;
 import com.example.website.dto.RegistrationResponse;
-import com.example.website.entity.Registration;
-import com.example.website.repository.RegistrationRepository;
+import com.example.website.repository.UserRepository;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
 
-    private final RegistrationRepository repository;
+    private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public RegistrationServiceImpl(RegistrationRepository repository, PasswordEncoder passwordEncoder) {
+    public RegistrationServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -34,16 +34,16 @@ public class RegistrationServiceImpl implements RegistrationService {
             return new RegistrationResponse(null, "Email already registered");
         }
 
-        Registration reg = new Registration();
-        reg.setCompanyName(request.getCompanyName());
-        reg.setCompanyEmail(request.getCompanyEmail());
-        reg.setCompanySize(request.getCompanySize());
-        reg.setPrimaryStack(request.getPrimaryStack());
+        User user = new User();
+        user.setCompanyName(request.getCompanyName());
+        user.setCompanyEmail(request.getCompanyEmail());
+        user.setCompanySize(request.getCompanySize());
+        user.setPrimaryStack(request.getPrimaryStack());
 
-        reg.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        Registration saved = repository.save(reg);
+        User saved = repository.save(user);
 
-        return new RegistrationResponse(saved.getId(), "Registration successful");
+        return new RegistrationResponse(saved.getId(), "User successful");
     }
 }

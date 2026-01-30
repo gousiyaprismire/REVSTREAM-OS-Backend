@@ -1,31 +1,31 @@
 package com.example.website.service;
 
+import com.example.website.entity.User;
 import org.springframework.stereotype.Service;
 
 import com.example.website.dto.AddressRequest;
 import com.example.website.entity.Address;
-import com.example.website.entity.Registration;
 import com.example.website.repository.AddressRepository;
-import com.example.website.repository.RegistrationRepository;
+import com.example.website.repository.UserRepository;
 
 @Service
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
-    private final RegistrationRepository registrationRepository;
+    private final UserRepository userRepository;
 
     public AddressServiceImpl(AddressRepository addressRepository,
-                              RegistrationRepository registrationRepository) {
+                              UserRepository userRepository) {
         this.addressRepository = addressRepository;
-        this.registrationRepository = registrationRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public String saveAddress(Long registrationId, AddressRequest request) {
 
-        Registration reg = registrationRepository.findById(registrationId)
+        User reg = userRepository.findById(registrationId)
                 .orElseThrow(() ->
-                        new RuntimeException("Registration not found with ID: " + registrationId));
+                        new RuntimeException("User not found with ID: " + registrationId));
 
        
         if (addressRepository.existsByRegistrationId(registrationId)) {

@@ -1,26 +1,25 @@
 package com.example.website.security.customer;
 
-import com.example.website.entity.Registration;
-import com.example.website.repository.RegistrationRepository;
+import com.example.website.repository.UserRepository;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final RegistrationRepository registrationRepository;
+    private final UserRepository userRepository;
 
-    public CustomUserDetailsService(RegistrationRepository registrationRepository) {
-        this.registrationRepository = registrationRepository;
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Registration reg = registrationRepository.findByCompanyEmail(email)
+        com.example.website.entity.User reg = userRepository.findByCompanyEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return User.withUsername(reg.getCompanyEmail())
+        return org.springframework.security.core.userdetails.User.withUsername(reg.getCompanyEmail())
                 .password(reg.getPassword())
                 .roles("USER")
                 .build();

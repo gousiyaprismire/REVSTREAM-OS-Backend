@@ -3,7 +3,6 @@ package com.example.website.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,7 +15,7 @@ public class Wallet {
     @OneToOne
     @JoinColumn(name = "registration_id")
     @JsonIgnore
-    private Registration registration;
+    private User user;
 
     private Double balance = 0.0;
     private Double lockedBalance = 0.0;
@@ -65,12 +64,12 @@ public class Wallet {
         this.id = id;
     }
 
-    public Registration getRegistration() {
-        return registration;
+    public User getRegistration() {
+        return user;
     }
 
-    public void setRegistration(Registration registration) {
-        this.registration = registration;
+    public void setRegistration(User user) {
+        this.user = user;
     }
 
     public Double getBalance() {

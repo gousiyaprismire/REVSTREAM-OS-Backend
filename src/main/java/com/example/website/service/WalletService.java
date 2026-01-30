@@ -1,10 +1,10 @@
 package com.example.website.service;
 
-import com.example.website.entity.Registration;
 import com.example.website.entity.Task;
+import com.example.website.entity.User;
 import com.example.website.entity.Wallet;
 import com.example.website.entity.WalletTransaction;
-import com.example.website.repository.RegistrationRepository;
+import com.example.website.repository.UserRepository;
 import com.example.website.repository.WalletRepository;
 import com.example.website.repository.WalletTransactionRepository;
 import com.razorpay.Order;
@@ -32,15 +32,15 @@ public class WalletService {
 
     private RazorpayClient razorpayClient;
 
-    private final RegistrationRepository registrationRepository;
+    private final UserRepository userRepository;
     private final WalletRepository walletRepository;
     private final WalletTransactionRepository transactionRepository;
 
     public WalletService(WalletRepository walletRepository,
                          WalletTransactionRepository transactionRepository,
-                         RegistrationRepository registrationRepository
+                         UserRepository userRepository
     ) {
-        this.registrationRepository=registrationRepository;
+        this.userRepository = userRepository;
         this.walletRepository = walletRepository;
         this.transactionRepository = transactionRepository;
     }
@@ -66,9 +66,9 @@ public class WalletService {
 
 
 
-    public Wallet createWallet(Registration registration) {
+    public Wallet createWallet(User user) {
         Wallet wallet = new Wallet();
-        wallet.setRegistration(registration);
+        wallet.setRegistration(user);
         wallet.setBalance(0.0);
         wallet.setLockedBalance(0.0);
         return walletRepository.save(wallet);
@@ -78,14 +78,14 @@ public class WalletService {
     public Order createAddMoneyOrder(Long registrationId, Double amount) {
 
         try {
-            Optional<Registration> optionalRegistration=registrationRepository.findById(registrationId);
+            Optional<User> optionalRegistration= userRepository.findById(registrationId);
             if (optionalRegistration.isEmpty()){
                 throw new RuntimeException("user ID not found");
             }
-            Registration registration=optionalRegistration.get();
+            User user =optionalRegistration.get();
             Wallet wallet;
-            Optional<Wallet> optionalWallet=walletRepository.findByRegistrationId(registrationId);
-            wallet = optionalWallet.orElseGet(() -> createWallet(registration));
+            Optional<Wallet> optionalWallet=walletRepository.findByUserId(registrationId);
+            wallet = optionalWallet.orElseGet(() -> createWallet(user));
 
             WalletTransaction newtx=new WalletTransaction();
             newtx.setWallet(wallet);
@@ -194,12 +194,12 @@ public class WalletService {
 
     public Wallet getWallet(Long registrationId) {
 
-        return walletRepository.findByRegistrationId(registrationId)
+        return walletRepository.findByUserId(registrationId)
                 .orElseGet(() -> {
-                    Registration registration = registrationRepository.findById(registrationId)
-                            .orElseThrow(() -> new RuntimeException("Registration not found"));
+                    User user = userRepository.findById(registrationId)
+                            .orElseThrow(() -> new RuntimeException("User not found"));
 
-                    return createWallet(registration);
+                    return createWallet(user);
                 });
     }
 }

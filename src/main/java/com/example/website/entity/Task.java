@@ -34,10 +34,10 @@ public class Task {
     @ElementCollection
     private List<String> attachments;
 
-    // Link Task with Registration (User)
+    // Link Task with User (User)
     @ManyToOne
     @JoinColumn(name = "registration_id", nullable = false)
-    private Registration registration;
+    private User user;
     
     
     // Getters & Setters
@@ -122,11 +122,11 @@ public class Task {
         this.attachments = attachments;
     }
 
-    public Registration getRegistration() {
-        return registration;
+    public User getRegistration() {
+        return user;
     }
 
-    public void setRegistration(Registration registration) {
-        this.registration = registration;
+    public void setRegistration(User user) {
+        this.user = user;
     }
 }

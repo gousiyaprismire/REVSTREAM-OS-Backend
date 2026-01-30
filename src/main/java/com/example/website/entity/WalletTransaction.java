@@ -24,6 +24,12 @@ public class WalletTransaction {
     @JsonIgnore
     private Wallet wallet;
 
+    @ManyToOne
+    private User transferTo;
+
+    @ManyToOne
+    private Task task;
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
 

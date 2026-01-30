@@ -1,12 +1,12 @@
 package com.example.website.service;
 
+import com.example.website.entity.User;
 import org.springframework.stereotype.Service;
 
 import com.example.website.dto.TaskRequest;
 import com.example.website.dto.TaskResponse;
-import com.example.website.entity.Registration;
 import com.example.website.entity.Task;
-import com.example.website.repository.RegistrationRepository;
+import com.example.website.repository.UserRepository;
 import com.example.website.repository.TaskRepository;
 
 import java.time.LocalDateTime;
@@ -17,18 +17,18 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final RegistrationRepository registrationRepository;
+    private final UserRepository userRepository;
 
     public TaskServiceImpl(TaskRepository taskRepository,
-                           RegistrationRepository registrationRepository) {
+                           UserRepository userRepository) {
         this.taskRepository = taskRepository;
-        this.registrationRepository = registrationRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public Task addNewTask(Long registrationId, TaskRequest request) {
 
-        Registration registration = registrationRepository.findById(registrationId)
+        User user = userRepository.findById(registrationId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + registrationId));
 
         Task task = new Task();
@@ -46,7 +46,7 @@ public class TaskServiceImpl implements TaskService {
         task.setCreatedAt(LocalDateTime.now());
 
         // ✅ Link task to user
-        task.setRegistration(registration);
+        task.setRegistration(user);
 
         return taskRepository.save(task);
     }
@@ -54,7 +54,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskResponse> getTasksByUser(Long registrationId) {
 
-        return taskRepository.findByRegistrationId(registrationId)
+        return taskRepository.findByUserId(registrationId)
                 .stream()
                 .map(task -> {
                     TaskResponse res = new TaskResponse();
