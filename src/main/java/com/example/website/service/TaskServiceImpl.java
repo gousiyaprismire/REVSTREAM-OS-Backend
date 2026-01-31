@@ -1,6 +1,11 @@
 package com.example.website.service;
 
 import com.example.website.entity.User;
+import com.example.website.enums.TaskStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.website.dto.TaskRequest;
@@ -23,6 +28,11 @@ public class TaskServiceImpl implements TaskService {
                            UserRepository userRepository) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public Task getTask(Long taskId) {
+        return taskRepository.findById(taskId).orElse(null);
     }
 
     @Override
@@ -51,11 +61,18 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.save(task);
     }
 
-    @Override
-    public List<TaskResponse> getTasksByUser(Long registrationId) {
 
-        return taskRepository.findByUserId(registrationId)
-                .stream()
+    @Override
+    public Page<TaskResponse> findTasks(
+            Long userId,
+            TaskStatus status,
+            int page,
+            int size
+    ) {
+        Pageable pageable =
+                PageRequest.of(page, size, Sort.by("updatedAt").descending());
+
+        return taskRepository.findTasks(userId, status, pageable)
                 .map(task -> {
                     TaskResponse res = new TaskResponse();
                     res.setId(task.getId());
@@ -69,10 +86,9 @@ public class TaskServiceImpl implements TaskService {
                     res.setSkills(task.getSkills());
                     res.setCreatedAt(task.getCreatedAt());
                     return res;
-                })
-                .collect(Collectors.toList());
+                });
     }
-    
+
     @Override 
     
     public TaskResponse updateTask(Long taskId, TaskRequest request) {

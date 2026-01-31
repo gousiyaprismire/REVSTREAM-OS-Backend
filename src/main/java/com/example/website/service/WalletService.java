@@ -196,13 +196,17 @@ public class WalletService {
         Wallet senderWallet=getWallet(sender.getId());
         Wallet receiverWallet=getWallet(receiver.getId());
         senderWallet.setLockedBalance(senderWallet.getLockedBalance()-amount);
+        receiverWallet.setBalance(receiverWallet.getBalance()+amount);
+        System.out.println("senderWallet:"+senderWallet.getBalance()+" receiverWallet:"+receiverWallet.getBalance());
         walletRepository.save(senderWallet);
+        walletRepository.save(receiverWallet);
 
         WalletTransaction senderTnx=new WalletTransaction();
         senderTnx.setWallet(senderWallet);
         senderTnx.setStatus("success");
         senderTnx.setAmount(amount);
         senderTnx.setTask(task);
+        senderTnx.setTransferFrom(sender);
         senderTnx.setTransferTo(receiver);
         senderTnx.setType("task_release");
         transactionRepository.save(senderTnx);
@@ -210,6 +214,7 @@ public class WalletService {
         WalletTransaction receiverTnx=new WalletTransaction();
         receiverTnx.setWallet(receiverWallet);
         receiverTnx.setTransferFrom(sender);
+        receiverTnx.setTransferTo(receiver);
         receiverTnx.setStatus("success");
         receiverTnx.setAmount(amount);
         receiverTnx.setTask(task);

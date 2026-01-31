@@ -1,5 +1,6 @@
 package com.example.website.entity;
 
+import com.example.website.enums.TaskStatus;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +21,10 @@ public class Task {
 
     private double price;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TaskStatus status = TaskStatus.OPEN;
+
     @ElementCollection
     private List<String> skills;
 
@@ -27,19 +32,58 @@ public class Task {
 
     private LocalDate dueDate;
 
-    private LocalDateTime createdAt;
-
     private String note;
 
     @ElementCollection
     private List<String> attachments;
 
-    // Link Task with User (User)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    
-    
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_to")
+    private User assignedUser;
+
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    public boolean isUnassigned() {
+        return assignedUser == null;
+    }
+
+    public User getAssignedUser() {
+        return assignedUser;
+    }
+
+    public void setAssignedUser(User assignedUser) {
+        this.assignedUser = assignedUser;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     // Getters & Setters
 
     public Long getId() {
