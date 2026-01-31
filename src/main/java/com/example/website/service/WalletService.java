@@ -158,6 +158,7 @@ public class WalletService {
         transaction.setStatus("success");
         transaction.setAmount(task.getPrice());
         transaction.setType("task_lock");
+        transaction.setTask(task);
         transactionRepository.save(transaction);
         wallet.setBalance(wallet.getBalance() - task.getPrice());
         wallet.setLockedBalance(wallet.getLockedBalance() + task.getPrice());

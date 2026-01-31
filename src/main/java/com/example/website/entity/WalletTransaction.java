@@ -41,6 +41,22 @@ public class WalletTransaction {
         updatedAt = LocalDateTime.now();
     }
 
+    public User getTransferTo() {
+        return transferTo;
+    }
+
+    public void setTransferTo(User transferTo) {
+        this.transferTo = transferTo;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
