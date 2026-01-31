@@ -1,6 +1,8 @@
 package com.example.website.entity;
 
 
+import com.example.website.enums.TaskStatus;
+import com.example.website.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -14,11 +16,12 @@ public class WalletTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type; // ADD, LOCK, RELEASE, REFUND
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;
     private Double amount;
     private String receiptID;
     private String razorpayPaymentId;
-    private String status; // SUCCESS, FAILED, PENDING
+    private String status;
 
     @ManyToOne
     @JsonIgnore
@@ -101,11 +104,11 @@ public class WalletTransaction {
         this.id = id;
     }
 
-    public String getType() {
+    public TransactionType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TransactionType type) {
         this.type = type;
     }
 

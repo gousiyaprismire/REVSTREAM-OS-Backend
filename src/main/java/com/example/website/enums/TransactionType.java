@@ -1,6 +1,8 @@
 package com.example.website.enums;
 
 public enum TransactionType {
-    CREDIT,
-    DEBIT
+    ADD,
+    TASK_LOCK,
+    TASK_RELEASE,
+    WITHDRAW
 }

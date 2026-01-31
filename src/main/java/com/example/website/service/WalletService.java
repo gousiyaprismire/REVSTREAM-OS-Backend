@@ -4,6 +4,7 @@ import com.example.website.entity.Task;
 import com.example.website.entity.User;
 import com.example.website.entity.Wallet;
 import com.example.website.entity.WalletTransaction;
+import com.example.website.enums.TransactionType;
 import com.example.website.repository.UserRepository;
 import com.example.website.repository.WalletRepository;
 import com.example.website.repository.WalletTransactionRepository;
@@ -89,7 +90,7 @@ public class WalletService {
 
             WalletTransaction newtx=new WalletTransaction();
             newtx.setWallet(wallet);
-            newtx.setType("ADD");
+            newtx.setType(TransactionType.ADD);
             newtx.setStatus("PENDING");
             newtx.setAmount(amount);
             WalletTransaction savedTransaction = transactionRepository.save(newtx);
@@ -157,7 +158,7 @@ public class WalletService {
         transaction.setWallet(wallet);
         transaction.setStatus("success");
         transaction.setAmount(task.getPrice());
-        transaction.setType("task_lock");
+        transaction.setType(TransactionType.TASK_LOCK);
         transaction.setTask(task);
         transactionRepository.save(transaction);
         wallet.setBalance(wallet.getBalance() - task.getPrice());
@@ -177,7 +178,7 @@ public class WalletService {
         WalletTransaction transaction=new WalletTransaction();
         transaction.setWallet(wallet);
         transaction.setStatus("PENDING");
-        transaction.setType("WITHDRAW");
+        transaction.setType(TransactionType.WITHDRAW);
         transaction.setAmount(amount);
         transactionRepository.save(transaction);
     }
@@ -208,7 +209,7 @@ public class WalletService {
         senderTnx.setTask(task);
         senderTnx.setTransferFrom(sender);
         senderTnx.setTransferTo(receiver);
-        senderTnx.setType("task_release");
+        senderTnx.setType(TransactionType.TASK_RELEASE);
         transactionRepository.save(senderTnx);
 
         WalletTransaction receiverTnx=new WalletTransaction();
@@ -218,7 +219,7 @@ public class WalletService {
         receiverTnx.setStatus("success");
         receiverTnx.setAmount(amount);
         receiverTnx.setTask(task);
-        receiverTnx.setType("task_release");
+        receiverTnx.setType(TransactionType.TASK_RELEASE);
         transactionRepository.save(receiverTnx);
     }
 

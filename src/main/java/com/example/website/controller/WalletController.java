@@ -2,6 +2,7 @@ package com.example.website.controller;
 
 import com.example.website.dto.NewOrder;
 import com.example.website.dto.VerifyPayment;
+import com.example.website.dto.WalletTransactionDTO;
 import com.example.website.entity.Wallet;
 import com.example.website.entity.WalletTransaction;
 import com.example.website.repository.WalletTransactionRepository;
@@ -85,14 +86,87 @@ public class WalletController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getAllTransactions(
-            Authentication authentication
-    ){
+    public ResponseEntity<?> getAllTransactions(Authentication authentication) {
+
         Long userId = (Long) authentication.getCredentials();
-        Wallet wallet =walletService.getWallet(userId);
-        List<WalletTransaction> transactionList=transactionRepository.findByWallet(wallet);
+
+        Wallet wallet = walletService.getWallet(userId);
+        List<WalletTransaction> transactions =
+                transactionRepository.findByWallet(wallet);
+
+        List<WalletTransactionDTO> txns =
+                transactions.stream()
+                        .map(t -> mapTransaction(t, userId))
+                        .toList();
+
         return ResponseEntity.ok(
-                Map.of("wallet",wallet,"transactions",transactionList)
+                Map.of(
+                        "wallet", wallet,
+                        "transactions", txns
+                )
+        );
+    }
+
+
+    private WalletTransactionDTO mapTransaction(
+            WalletTransaction t,
+            Long currentUserId
+    ) {
+        String direction;
+        String description;
+        Long counterpartyId = null;
+        Long taskId = t.getTask() != null ? t.getTask().getId() : null;
+        String taskName = t.getTask() != null ? t.getTask().getTitle() : null;
+
+        switch (t.getType()) {
+
+            case ADD -> {
+                direction = "CREDIT";
+                description = "Money added to wallet";
+            }
+
+            case TASK_LOCK -> {
+                direction = "DEBIT";
+                description = "Money locked for task #" + taskId +"  "+taskName ;
+            }
+
+            case TASK_RELEASE -> {
+                boolean isSender =
+                        t.getTransferFrom() != null &&
+                                t.getTransferFrom().getId().equals(currentUserId);
+
+                direction = isSender ? "DEBIT" : "CREDIT";
+
+                counterpartyId = isSender
+                        ? t.getTransferTo().getId()
+                        : t.getTransferFrom().getId();
+
+                description = isSender
+                        ? "Payment sent for task #" + taskId +"  "+taskName
+                        : "Payment received for task #" + taskId+"  "+taskName;
+            }
+
+            case WITHDRAW -> {
+                direction = "DEBIT";
+                description = "Money withdrawn from wallet";
+            }
+
+            default -> {
+                direction = "UNKNOWN";
+                description = "Unknown transaction";
+            }
+        }
+
+        return new WalletTransactionDTO(
+                t.getId(),
+                t.getType(),
+                t.getAmount(),
+                t.getStatus(),
+                t.getCreatedAt(),
+                direction,
+                description,
+                taskId,
+                counterpartyId
         );
     }
 
