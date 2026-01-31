@@ -36,7 +36,7 @@ public class Task {
 
     // Link Task with User (User)
     @ManyToOne
-    @JoinColumn(name = "registration_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     
     
@@ -122,11 +122,11 @@ public class Task {
         this.attachments = attachments;
     }
 
-    public User getRegistration() {
+    public User getUser() {
         return user;
     }
 
-    public void setRegistration(User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

@@ -28,7 +28,7 @@ public class AddressServiceImpl implements AddressService {
                         new RuntimeException("User not found with ID: " + registrationId));
 
        
-        if (addressRepository.existsByRegistrationId(registrationId)) {
+        if (addressRepository.existsByUserId(registrationId)) {
             return "Address already added for this registration";
         }
 
@@ -39,7 +39,7 @@ public class AddressServiceImpl implements AddressService {
         address.setDistrict(request.getDistrict());
         address.setPinCode(request.getPinCode());
         address.setCountry(request.getCountry());
-        address.setRegistration(reg);
+        address.setUser(reg);
 
         addressRepository.save(address);
 

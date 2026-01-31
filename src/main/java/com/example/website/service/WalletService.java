@@ -68,7 +68,7 @@ public class WalletService {
 
     public Wallet createWallet(User user) {
         Wallet wallet = new Wallet();
-        wallet.setRegistration(user);
+        wallet.setUser(user);
         wallet.setBalance(0.0);
         wallet.setLockedBalance(0.0);
         return walletRepository.save(wallet);

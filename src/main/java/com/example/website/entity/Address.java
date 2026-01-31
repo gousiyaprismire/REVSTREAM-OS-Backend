@@ -19,7 +19,7 @@ public class Address {
 
     //  link with User table
     @OneToOne
-    @JoinColumn(name = "registration_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     // Getters & Setters
@@ -44,6 +44,6 @@ public class Address {
     public String getCountry() { return country; }
     public void setCountry(String country) { this.country = country; }
 
-    public User getRegistration() { return user; }
-    public void setRegistration(User user) { this.user = user; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 }

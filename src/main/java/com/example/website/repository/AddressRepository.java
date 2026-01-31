@@ -5,5 +5,5 @@ import com.example.website.entity.Address;
 
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
-    boolean existsByRegistrationId(Long registrationId);
+    boolean existsByUserId(Long userId);
 }

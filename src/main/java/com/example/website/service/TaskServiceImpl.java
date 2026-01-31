@@ -46,7 +46,7 @@ public class TaskServiceImpl implements TaskService {
         task.setCreatedAt(LocalDateTime.now());
 
         // ✅ Link task to user
-        task.setRegistration(user);
+        task.setUser(user);
 
         return taskRepository.save(task);
     }

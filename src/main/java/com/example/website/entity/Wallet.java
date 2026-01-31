@@ -13,7 +13,7 @@ public class Wallet {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "registration_id")
+    @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
@@ -64,11 +64,11 @@ public class Wallet {
         this.id = id;
     }
 
-    public User getRegistration() {
+    public User getUser() {
         return user;
     }
 
-    public void setRegistration(User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
