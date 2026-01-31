@@ -28,6 +28,9 @@ public class WalletTransaction {
     private User transferTo;
 
     @ManyToOne
+    private User transferFrom;
+
+    @ManyToOne
     private Task task;
 
     @Column(updatable = false)
@@ -39,6 +42,14 @@ public class WalletTransaction {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+    }
+
+    public User getTransferFrom() {
+        return transferFrom;
+    }
+
+    public void setTransferFrom(User transferFrom) {
+        this.transferFrom = transferFrom;
     }
 
     public User getTransferTo() {
