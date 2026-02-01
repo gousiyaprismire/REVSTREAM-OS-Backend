@@ -34,7 +34,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/api/auth/**",
-                    "/api/registration/**"
+                    "/api/registration/**",
+                    "/admin-auth/**" 
                 ).permitAll()
                 .anyRequest().authenticated()
             );

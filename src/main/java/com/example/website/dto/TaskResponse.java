@@ -19,8 +19,60 @@ public class TaskResponse {
     private List<String> skills;
 
     private LocalDateTime createdAt;
+    
+    private String category;
+    private String subType;
+    private String documentUrl;
 
-    public Long getId() { return id; }
+    private Integer estimatedTimeMin;
+    private Integer estimatedTimeMax;
+    private Integer estimatedAmountMin;
+    private Integer estimatedAmountMax;
+
+
+    public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getSubType() {
+		return subType;
+	}
+	public void setSubType(String subType) {
+		this.subType = subType;
+	}
+	public String getDocumentUrl() {
+		return documentUrl;
+	}
+	public void setDocumentUrl(String documentUrl) {
+		this.documentUrl = documentUrl;
+	}
+	public Integer getEstimatedTimeMin() {
+		return estimatedTimeMin;
+	}
+	public void setEstimatedTimeMin(Integer estimatedTimeMin) {
+		this.estimatedTimeMin = estimatedTimeMin;
+	}
+	public Integer getEstimatedTimeMax() {
+		return estimatedTimeMax;
+	}
+	public void setEstimatedTimeMax(Integer estimatedTimeMax) {
+		this.estimatedTimeMax = estimatedTimeMax;
+	}
+	public Integer getEstimatedAmountMin() {
+		return estimatedAmountMin;
+	}
+	public void setEstimatedAmountMin(Integer estimatedAmountMin) {
+		this.estimatedAmountMin = estimatedAmountMin;
+	}
+	public Integer getEstimatedAmountMax() {
+		return estimatedAmountMax;
+	}
+	public void setEstimatedAmountMax(Integer estimatedAmountMax) {
+		this.estimatedAmountMax = estimatedAmountMax;
+	}
+	public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public String getTitle() { return title; }

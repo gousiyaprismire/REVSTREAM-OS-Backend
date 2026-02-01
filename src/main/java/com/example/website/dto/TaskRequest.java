@@ -15,6 +15,10 @@ public class TaskRequest {
 
     private double price;          
     private List<String> skills;   
+    
+    private String category;
+    private String subType;
+    private String documentUrl;
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -39,4 +43,24 @@ public class TaskRequest {
 
     public List<String> getSkills() { return skills; }
     public void setSkills(List<String> skills) { this.skills = skills; }
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getSubType() {
+		return subType;
+	}
+	public void setSubType(String subType) {
+		this.subType = subType;
+	}
+	public String getDocumentUrl() {
+		return documentUrl;
+	}
+	public void setDocumentUrl(String documentUrl) {
+		this.documentUrl = documentUrl;
+	}
+    
+    
 }
