@@ -1,12 +1,12 @@
 package com.example.website.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.website.dto.SupportTicketRequest;
-import com.example.website.entity.SupportTicket;
 import com.example.website.service.SupportTicketService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/support-tickets")
@@ -19,22 +19,21 @@ public class SupportTicketController {
         this.service = service;
     }
 
-    /* CREATE */
+    /* CREATE SUPPORT TICKET */
     @PostMapping
-    public ResponseEntity<SupportTicket> createTicket(
-            @RequestBody @Valid SupportTicketRequest request) {
+    public ResponseEntity<?> createTicket(
+            @Valid @RequestBody SupportTicketRequest request) {
 
-        Long userId = 1L; // TEMP
-        return ResponseEntity.ok(service.createTicket(userId, request));
+        return ResponseEntity.ok(service.createTicket(request));
     }
 
-    /* GET ALL TICKETS FOR USER */
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getUserTickets(@PathVariable Long userId) {
-        return ResponseEntity.ok(service.getTicketsByUser(userId));
+    /* GET ALL TICKETS */
+    @GetMapping
+    public ResponseEntity<?> getAllTickets() {
+        return ResponseEntity.ok(service.getAllTickets());
     }
 
-    /* GET SINGLE TICKET */
+    /* GET SINGLE TICKET BY ID */
     @GetMapping("/{ticketId}")
     public ResponseEntity<?> getTicket(@PathVariable Long ticketId) {
         return ResponseEntity.ok(service.getTicketById(ticketId));

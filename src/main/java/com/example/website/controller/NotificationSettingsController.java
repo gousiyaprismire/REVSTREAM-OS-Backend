@@ -16,18 +16,17 @@ public class NotificationSettingsController {
         this.service = service;
     }
 
-    // GET SETTINGS
-    @GetMapping("/{userId}")
-    public NotificationSettings getSettings(@PathVariable Long userId) {
-        return service.getSettings(userId);
+    // GET settings for logged-in user
+    @GetMapping
+    public NotificationSettings getSettings() {
+        return service.getSettings();
     }
 
-    // SAVE / UPDATE SETTINGS
-    @PostMapping("/{userId}")
+    // SAVE / UPDATE settings for logged-in user
+    @PostMapping
     public NotificationSettings saveSettings(
-            @PathVariable Long userId,
             @RequestBody NotificationSettings settings) {
 
-        return service.saveSettings(userId, settings);
+        return service.saveSettings(settings);
     }
 }

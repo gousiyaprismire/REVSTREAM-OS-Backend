@@ -10,7 +10,6 @@ public class NotificationSettings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId; // map with logged-in user
 
     private boolean allNotifications;
     private String frequency;
@@ -36,12 +35,7 @@ public class NotificationSettings {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getUserId() {
-		return userId;
-	}
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+
 	public boolean isAllNotifications() {
 		return allNotifications;
 	}

@@ -1,13 +1,15 @@
 package com.example.website.service;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import com.example.website.entity.NotificationSettings;
 import com.example.website.repository.NotificationSettingsRepository;
-import com.example.website.service.NotificationSettingsService;
-
 @Service
-public class NotificationSettingsServiceImpl implements NotificationSettingsService {
+public class NotificationSettingsServiceImpl
+        implements NotificationSettingsService {
 
     private final NotificationSettingsRepository repo;
 
@@ -16,11 +18,13 @@ public class NotificationSettingsServiceImpl implements NotificationSettingsServ
     }
 
     @Override
-    public NotificationSettings getSettings(Long userId) {
-        return repo.findByUserId(userId)
+    public NotificationSettings getSettings() {
+        // Always return the first (and only) record
+        return repo.findAll()
+                .stream()
+                .findFirst()
                 .orElseGet(() -> {
                     NotificationSettings s = new NotificationSettings();
-                    s.setUserId(userId);
                     s.setAllNotifications(true);
                     s.setFrequency("realtime");
                     return repo.save(s);
@@ -28,12 +32,13 @@ public class NotificationSettingsServiceImpl implements NotificationSettingsServ
     }
 
     @Override
-    public NotificationSettings saveSettings(Long userId, NotificationSettings settings) {
+    public NotificationSettings saveSettings(NotificationSettings settings) {
         NotificationSettings existing =
-                repo.findByUserId(userId).orElse(new NotificationSettings());
+                repo.findAll().stream().findFirst().orElse(null);
 
-        settings.setId(existing.getId());
-        settings.setUserId(userId);
+        if (existing != null) {
+            settings.setId(existing.getId());
+        }
 
         return repo.save(settings);
     }

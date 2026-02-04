@@ -17,23 +17,25 @@ public class CompanyProfileController {
         this.service = service;
     }
 
-    // Get company profile (page load)
+    // -------- GET COMPANY PROFILE ----------
     @GetMapping("/profile")
     public CompanyProfileResponse getProfile() {
         return service.getCompanyProfile();
     }
 
-    // Update company profile (Save Changes)
+    // -------- UPDATE COMPANY PROFILE ----------
     @PutMapping("/profile")
     public CompanyProfileResponse updateProfile(
             @RequestBody CompanyProfileRequest request) {
+
         return service.updateCompanyProfile(request);
     }
-    
-    @PostMapping("/profile/logo")
-    public String uploadLogo(@RequestParam("file") MultipartFile file) {
-        // Save file to /uploads folder or cloud
-        return "Logo uploaded successfully";
-    }
 
+    // -------- UPLOAD & UPDATE LOGO ----------
+    @PostMapping("/profile/logo")
+    public CompanyProfileResponse uploadLogo(
+            @RequestParam("file") MultipartFile file) {
+
+        return service.updateLogo(file);
+    }
 }

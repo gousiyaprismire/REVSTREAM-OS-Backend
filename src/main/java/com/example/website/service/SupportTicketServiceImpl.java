@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.example.website.dto.SupportTicketRequest;
 import com.example.website.entity.SupportTicket;
 import com.example.website.repository.SupportTicketRepository;
-import com.example.website.service.SupportTicketService;
 
 @Service
 public class SupportTicketServiceImpl implements SupportTicketService {
@@ -19,10 +18,9 @@ public class SupportTicketServiceImpl implements SupportTicketService {
     }
 
     @Override
-    public SupportTicket createTicket(Long userId, SupportTicketRequest request) {
+    public SupportTicket createTicket(SupportTicketRequest request) {
 
         SupportTicket ticket = new SupportTicket();
-        ticket.setUserId(userId);
         ticket.setCategory(request.getCategory());
         ticket.setTaskId(request.getTaskId());
         ticket.setShortDesc(request.getShortDesc());
@@ -31,10 +29,10 @@ public class SupportTicketServiceImpl implements SupportTicketService {
 
         return repository.save(ticket);
     }
-    
+
     @Override
-    public List<SupportTicket> getTicketsByUser(Long userId) {
-        return repository.findByUserId(userId);
+    public List<SupportTicket> getAllTickets() {
+        return repository.findAll();
     }
 
     @Override

@@ -7,8 +7,9 @@ import com.example.website.entity.SupportTicket;
 
 public interface SupportTicketService {
 
-    SupportTicket createTicket(Long userId, SupportTicketRequest request);
-    List<SupportTicket> getTicketsByUser(Long userId);
+    SupportTicket createTicket(SupportTicketRequest request);
+
+    List<SupportTicket> getAllTickets();
 
     SupportTicket getTicketById(Long ticketId);
 }

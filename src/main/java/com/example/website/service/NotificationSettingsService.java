@@ -4,7 +4,7 @@ import com.example.website.entity.NotificationSettings;
 
 public interface NotificationSettingsService {
 
-    NotificationSettings getSettings(Long userId);
+    NotificationSettings getSettings();
 
-    NotificationSettings saveSettings(Long userId, NotificationSettings settings);
+    NotificationSettings saveSettings(NotificationSettings settings);
 }
