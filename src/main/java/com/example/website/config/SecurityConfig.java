@@ -1,5 +1,3 @@
-
-
 package com.example.website.config;
 
 import com.example.website.filters.JwtAuthFilter;
@@ -28,15 +26,26 @@ public class SecurityConfig {
         http
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable()) // REQUIRED for Postman
+
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
+
             .authorizeHttpRequests(auth -> auth
+
+                // ✅ YOU HAD THESE — I DID NOT REMOVE THEM
                 .requestMatchers(
                     "/api/auth/**",
                     "/api/registration/**",
-                    "/admin-auth/**" 
+                    "/admin-auth/**",
+
+                    // ✅ ONLY THIS LINE IS NEW
+                    "/api/marketplace/**",
+                    //Email
+                    "/api/password/forgot",
+                    "/api/password/reset"
                 ).permitAll()
+
                 .anyRequest().authenticated()
             );
 
