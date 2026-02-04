@@ -13,10 +13,14 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;   // <-- ADD THIS
 
-    public RegistrationServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
+    public RegistrationServiceImpl(UserRepository repository,
+                                   PasswordEncoder passwordEncoder,
+                                   EmailService emailService) {   // <-- ADD HERE
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     @Override
@@ -39,11 +43,17 @@ public class RegistrationServiceImpl implements RegistrationService {
         user.setCompanyEmail(request.getCompanyEmail());
         user.setCompanySize(request.getCompanySize());
         user.setPrimaryStack(request.getPrimaryStack());
-
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         User saved = repository.save(user);
 
-        return new RegistrationResponse(saved.getId(), "User successful");
+        // ✅ SEND EMAIL AFTER SUCCESSFUL REGISTRATION
+        emailService.sendRegistrationEmail(
+                saved.getCompanyEmail(),
+                saved.getCompanyName()
+        );
+
+        return new RegistrationResponse(saved.getId(), 
+                "User registered successfully. Confirmation email sent.");
     }
 }
